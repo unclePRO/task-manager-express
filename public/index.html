@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Task Manager</h1>
+    
+    <!-- Task Form -->
+    <form id="taskForm">
+      <input type="text" id="formTitle" placeholder="Task title" required>
+      <input type="text" id="formDescription" placeholder="Task description">
+      <!-- <label>
+        <input type="checkbox" id="completed"> Completed
+      </label> -->
+      <button type="submit">Add Task</button>
+    </form>
+    
+    <!-- Tasks List -->
+    <div id="taskList"></div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>

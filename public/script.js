@@ -19,4 +19,27 @@ function displayTasks(tasks) {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadTasks();
+    const form = document.getElementById('taskForm');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('formTitle').value;
+        const desc = document.getElementById('formDescription').value;
+
+        try {
+            const res = await fetch('/tasks', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({ title, desc}),
+            })
+
+            form.reset();
+
+            const tasks = await res.json();
+            displayTasks(tasks);
+        } catch (error) {
+            
+        }
+    })
+
 });

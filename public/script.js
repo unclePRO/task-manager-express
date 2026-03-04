@@ -5,13 +5,25 @@ async function loadTasks() {
     displayTasks(tasks);
 }
 
+
+async function deleteTask(taskID) {
+    const response = await fetch(`/tasks/${taskID}`, {
+        method: 'DELETE',
+    });
+    loadTasks();
+}
+
+
 function displayTasks(tasks) {
     const listDiv = document.getElementById('taskList');
     listDiv.innerHTML = '';
   
     tasks.forEach(task => {
         const taskDiv = document.createElement('div');
-        taskDiv.innerHTML = `<h3>Title: ${task.title}</h3> <p>Description: ${task.description}</p><p>Completed: ${task.completed}</p>`;
+        taskDiv.innerHTML = `<h3>Title: ${task.title}</h3>
+        <p>Description: ${task.description}</p>
+        <p>Completed: ${task.completed}</p>
+        <button onclick="deleteTask('${task._id}')">Delete</button>`;
         listDiv.appendChild(taskDiv);
     });
 }

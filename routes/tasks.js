@@ -48,11 +48,11 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:title', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
-        const result = await Tasks.findOne({ title: req.params.title});
-        await Tasks.deleteOne({ title: req.params.title });
-        res.json({message: "ok"});
+        const result = await Tasks.findOne({ _id: req.params.id});
+        await Tasks.deleteOne({ _id: req.params.id });
+        res.json({message: "deleted"});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

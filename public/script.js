@@ -1,7 +1,7 @@
 async function loadTasks() {
     const response = await fetch('/tasks');
     const tasks = await response.json();
-    console.log(tasks);
+    //console.log(tasks);
     displayTasks(tasks);
 }
 
@@ -24,19 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('formTitle').value;
-        const desc = document.getElementById('formDescription').value;
+        const description = document.getElementById('formDescription').value;
+        console.log('Sending:', { title, description });
 
         try {
             const res = await fetch('/tasks', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'},
-                body: JSON.stringify({ title, desc}),
-            })
+                body: JSON.stringify({ title, description }),
+            });
 
             form.reset();
-
-            const tasks = await res.json();
-            displayTasks(tasks);
+            loadTasks();
         } catch (error) {
             
         }

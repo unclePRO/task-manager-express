@@ -1,40 +1,30 @@
+const path = require('path');
 const express = require('express');
-const app = express();
-require('dotenv').config();
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-app.use(express.static("public"));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+const app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));  // frontend folder fr
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB.'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// API ROUTES
+app.use('/tasks', require('./routes/tasks'));
+app.use('/users', require('./routes/users'));
 
-
-app.get('/', logger, (req, res) => {
-    console.log('HI');
-    res.render('index', {text: "nigga"});
-})
-
-const userRouter = require('./routes/users');
-app.use('/users', userRouter);
-
-const tasksRouter = require('./routes/tasks');
-app.use('/tasks', tasksRouter);
-
-function logger(req, res, next) {
-    console.log(req.originalUrl);
-    next();
-} 
-
-process.on('uncaughtException', err => {
-  console.error('Uncaught:', err);
-  process.exit(1);
+// Frontend routes
+app.get('/', (req, res) => {
+  res.render('index', { text: "Hello" });
 });
 
-app.listen(3000);
+// MongoDB
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB:', err));
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server on ${port}`));
